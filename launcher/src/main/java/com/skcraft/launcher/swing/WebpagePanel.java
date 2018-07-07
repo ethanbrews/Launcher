@@ -40,7 +40,8 @@ public final class WebpagePanel extends JPanel {
     private JProgressBar progressBar;
     private Thread thread;
     private Border browserBorder;
-    
+    private static String errorHTMLTemplate = "<html> <head> <style> @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed|Roboto+Mono|Roboto+Slab|Roboto:400,500'); html, body { font-family: \"Roboto\", sans-serif; padding: 5px, 3px, 3px, 10px; } p { font-weight: 300; font-size: 0.9em; }</style> </head> <body style=\"min-width: 100vw; min-height: 100vh; background-color: #EFEFF4;\"><p><span style=\"font-weight: 500;\">Error loading updates</span><br/>%s</p></body></html>";
+
     public static WebpagePanel forURL(URL url, boolean lazy) {
         return new WebpagePanel(url, lazy);
     }
@@ -230,8 +231,8 @@ public final class WebpagePanel extends JPanel {
 
     private void setError(String text) {
         progressBar.setVisible(false);
-        documentView.setContentType("text/plain");
-        documentView.setText(text);
+        documentView.setContentType("text/html");
+        documentView.setText(String.format(errorHTMLTemplate, text));
         documentView.setCaretPosition(0);
     }
     
@@ -294,5 +295,4 @@ public final class WebpagePanel extends JPanel {
             }
         }
     }
-
 }
